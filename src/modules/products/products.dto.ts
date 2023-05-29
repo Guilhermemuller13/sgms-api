@@ -1,4 +1,10 @@
-import { IsString, MinLength, IsOptional, IsNumber } from 'class-validator';
+import {
+  IsString,
+  MinLength,
+  MaxLength,
+  IsOptional,
+  IsNumber,
+} from 'class-validator';
 
 export class ProductsDto {
   @IsString()
@@ -9,10 +15,10 @@ export class ProductsDto {
   @MinLength(4)
   code: string;
 
-  // @IsString()
-  // @MinLength(4)
-  // @MaxLength(30)
-  // description?: string;
+  @IsString()
+  @MinLength(4)
+  @MaxLength(30)
+  description?: string;
 
   @IsString()
   @MinLength(4)

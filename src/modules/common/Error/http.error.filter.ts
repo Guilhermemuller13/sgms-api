@@ -15,7 +15,7 @@ export class HttpErrorFilter implements ExceptionFilter {
 
     const status = Object.values(exception)[0];
 
-    console.log({ status: status });
+    console.log({ status: status, exception });
 
     let statusCode = status.statusCode;
     if (status === 'SequelizeUniqueConstraintError') {

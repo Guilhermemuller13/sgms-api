@@ -12,6 +12,8 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesPermissionsModule } from './modules/roles-permissions/roles-permissions.module';
 import { MotorcyclesModule } from './modules/motorcycles/motorcycles.module';
 import { MotorcyclesBrandsModule } from './modules/motorcycles-brands/motorcycles-brands.module';
+import { ServicesModule } from './modules/services/services.module';
+import { ServicesProductsModule } from './modules/services-products/services-products.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { MotorcyclesBrandsModule } from './modules/motorcycles-brands/motorcycle
     RolesPermissionsModule,
     MotorcyclesModule,
     MotorcyclesBrandsModule,
+    ServicesModule,
+    ServicesProductsModule,
   ],
   providers: [
     {

@@ -30,7 +30,6 @@ export const multerOptions: MulterOptions = {
     console.log({ fileExist });
 
     if (fileExist) {
-      console.log({ skipped: 'skipped' });
       cb(null, false);
       return;
     }

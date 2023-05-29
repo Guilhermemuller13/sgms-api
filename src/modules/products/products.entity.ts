@@ -1,7 +1,9 @@
-import { Table, Column } from 'sequelize-typescript';
+import { Table, Column, BelongsToMany } from 'sequelize-typescript';
 import { instanceToPlain } from 'class-transformer';
 
 import { AbstractEntity } from '../common/models/abstract-entity';
+import { ServiceEntity } from '../services/service.entity';
+import { ServicesProductsEntity } from '../services-products/services-products.entity';
 
 @Table({ tableName: 'products' })
 export class ProductsEntity extends AbstractEntity {
@@ -34,6 +36,9 @@ export class ProductsEntity extends AbstractEntity {
 
   @Column
   photos?: string;
+
+  @BelongsToMany(() => ServiceEntity, () => ServicesProductsEntity)
+  services: ServiceEntity[];
 
   toJSON() {
     return instanceToPlain(this);
