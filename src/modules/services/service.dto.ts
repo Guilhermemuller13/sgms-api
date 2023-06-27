@@ -22,10 +22,13 @@ export class ServiceDto {
 
   @IsArray()
   // @ValidateNested({ each: true })
-  products: number[];
+  products: { productId: string; quantity: number }[];
 
   @IsNumber()
   motorcycleId: number;
+
+  @IsNumber()
+  userId: number;
 }
 
 export class CreateServiceDto extends ServiceDto {}

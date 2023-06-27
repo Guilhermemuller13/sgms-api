@@ -16,6 +16,9 @@ export class ServicesProductsEntity extends AbstractEntity {
   @Column
   product_id: number;
 
+  @Column
+  quantity: number;
+
   toJSON() {
     return instanceToPlain(this);
   }

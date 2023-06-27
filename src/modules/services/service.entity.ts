@@ -5,6 +5,7 @@ import { AbstractEntity } from '../common/models/abstract-entity';
 import { MotorcyclesEntity } from '../motorcycles/motorcycles.entity';
 import { ProductsEntity } from '../products/products.entity';
 import { ServicesProductsEntity } from '../services-products/services-products.entity';
+import { UserEntity } from '../users/users.entity';
 
 @Table({ tableName: 'services', paranoid: true })
 export class ServiceEntity extends AbstractEntity {
@@ -17,6 +18,10 @@ export class ServiceEntity extends AbstractEntity {
   @ForeignKey(() => MotorcyclesEntity)
   @Column
   motorcycle_id: number;
+
+  @ForeignKey(() => UserEntity)
+  @Column
+  user_id: number;
 
   @BelongsToMany(() => ProductsEntity, () => ServicesProductsEntity)
   products: ProductsEntity[];

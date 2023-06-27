@@ -15,7 +15,6 @@ import {
 import { ServiceEntity } from './service.entity';
 import { ServicesProductsEntity } from '../services-products/services-products.entity';
 import { ProductsEntity } from '../products/products.entity';
-import { QueryTypes } from 'sequelize';
 
 @Injectable()
 export class ServicesService {
@@ -35,12 +34,14 @@ export class ServicesService {
       const service = await this.serviceRepository.create({
         ...data,
         motorcycle_id: data.motorcycleId,
+        user_id: data.userId,
         // products: data.products,
       });
 
       const listProducts = data.products.map((product) => ({
         service_id: service.id,
-        product_id: product,
+        product_id: product.productId,
+        quantity: product.quantity,
       }));
 
       await this.serviceProductRepository.bulkCreate(listProducts);
@@ -66,7 +67,7 @@ export class ServicesService {
 
   async findOne(
     serviceId: number,
-  ): Promise<{ service: ServiceEntity; products: ProductsEntity[] }> {
+  ): Promise<{ service: ServiceEntity; products: ServicesProductsEntity[] }> {
     try {
       const service = await this.serviceRepository.findOne({
         where: {
@@ -84,15 +85,7 @@ export class ServicesService {
         },
       });
 
-      const productsIds = serviceProduct.map((item) => item.product_id);
-
-      const products = await this.productRepository.findAll({
-        where: {
-          id: productsIds,
-        },
-      });
-
-      return { service, products };
+      return { service, products: serviceProduct };
     } catch (error) {
       if (error.message === 'SERVICE.NOT.FOUND') {
         throw new NotFoundException(`${error.message}`);
@@ -115,7 +108,7 @@ export class ServicesService {
       }
 
       const serviceUpdated = await this.serviceRepository.update(
-        { ...data, motorcycle_id: data.motorcycleId },
+        { ...data, motorcycle_id: data.motorcycleId, user_id: data.userId },
         {
           where: {
             id: serviceId,
@@ -131,7 +124,8 @@ export class ServicesService {
 
       const listProducts = data.products.map((product) => ({
         service_id: service.id,
-        product_id: product,
+        product_id: product.productId,
+        quantity: product.quantity,
       }));
 
       await this.serviceProductRepository.bulkCreate(listProducts);
