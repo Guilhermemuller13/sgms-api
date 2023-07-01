@@ -9,9 +9,10 @@ import {
   UseGuards,
   Put,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
 import { ServicesService } from './services.service';
 import { CreateServiceDto, UpdateServiceDto } from './service.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('services')
 export class ServicesController {

@@ -12,9 +12,7 @@ export class UserDTO {
   @IsString()
   @MinLength(4)
   email: string;
-}
 
-export class CreateUserDTO extends UserDTO {
   @IsString()
   @MinLength(4)
   @MaxLength(20)
@@ -24,13 +22,11 @@ export class CreateUserDTO extends UserDTO {
   role_id: number;
 }
 
-export class UpdateUserDTO {
-  @IsEmail()
-  @IsOptional()
-  email: string;
-
+export class CreateUserDTO extends UserDTO {
   @IsString()
   @MinLength(4)
   @IsOptional()
   password: string;
 }
+
+export class UpdateUserDTO extends UserDTO {}
