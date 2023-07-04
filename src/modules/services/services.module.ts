@@ -8,6 +8,7 @@ import { AuthModule } from '../auth/auth.module';
 import { serviceProviders } from './service.providers';
 import { servicesProductsProviders } from '../services-products/services-products.providers';
 import { productsProviders } from '../products/products.providers';
+import { productsUpdateProviders } from '../product-update/products.providers';
 
 @Module({
   imports: [SequelizeModule.forFeature([ServiceEntity]), AuthModule],
@@ -17,6 +18,7 @@ import { productsProviders } from '../products/products.providers';
     serviceProviders,
     servicesProductsProviders,
     productsProviders,
+    productsUpdateProviders,
   ],
 })
 export class ServicesModule {}

@@ -15,6 +15,7 @@ import { MotorcyclesBrandsModule } from './modules/motorcycles-brands/motorcycle
 import { ServicesModule } from './modules/services/services.module';
 import { ServicesProductsModule } from './modules/services-products/services-products.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ProductUpdateModule } from './modules/product-update/product-update.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     ServicesModule,
     ServicesProductsModule,
     DashboardModule,
+    ProductUpdateModule,
   ],
   providers: [
     {

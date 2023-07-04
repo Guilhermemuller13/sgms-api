@@ -109,7 +109,7 @@ export class DashboardService {
       const mostUsedProductsIds = await this.serviceProductRepository.findAll({
         where: {
           quantity: {
-            [Op.gt]: 5,
+            [Op.gt]: 2,
           },
         },
         limit: 10,
@@ -135,7 +135,7 @@ export class DashboardService {
         description: product.description,
         brand: product.brand,
         price: product.price,
-        quantity: product.quantity,
+        quantity: product.quantity - product.quantity_in_service,
         quantity_minimum: product.quantity_minimum,
         status: product.status,
         available: product.available,
@@ -170,21 +170,25 @@ export class DashboardService {
     try {
       const products = await this.productsRepository.findAll({
         order: [['id', 'ASC']],
-        where: {
-          quantity: {
-            [Op.lt]: sequelize.col('quantity_minimum'),
-          },
-        },
       });
 
-      const lowStockProducts = products.map((product) => ({
+      const lowStockProducts = products.filter((product) => {
+        const quantity =
+          product.quantity - product.quantity_in_service <
+          product.quantity_minimum;
+
+        return quantity;
+      });
+
+      const productList = lowStockProducts.map((product) => ({
         id: product.id,
-        quantity: product.quantity,
+        quantity: product.quantity - product.quantity_in_service,
         quantity_minimum: product.quantity_minimum,
         code: product.code,
+        name: product.name,
       }));
 
-      return lowStockProducts;
+      return productList;
     } catch (error) {
       throw new InternalServerErrorException();
     }

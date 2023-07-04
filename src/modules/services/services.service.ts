@@ -15,6 +15,9 @@ import {
 import { ServiceEntity } from './service.entity';
 import { ServicesProductsEntity } from '../services-products/services-products.entity';
 import { ProductsEntity } from '../products/products.entity';
+import sequelize from 'sequelize';
+
+type Product = { productId: string; quantity: number };
 
 @Injectable()
 export class ServicesService {
@@ -35,7 +38,6 @@ export class ServicesService {
         ...data,
         motorcycle_id: data.motorcycleId,
         user_id: data.userId,
-        // products: data.products,
       });
 
       const listProducts = data.products.map((product) => ({
@@ -45,6 +47,7 @@ export class ServicesService {
       }));
 
       await this.serviceProductRepository.bulkCreate(listProducts);
+      await this.updateProducts(data.products);
 
       return service;
     } catch (error) {
@@ -59,6 +62,39 @@ export class ServicesService {
 
       throw new InternalServerErrorException();
     }
+  }
+
+  async updateProducts(products: Product[] = []) {
+    products.forEach(async (product) => {
+      try {
+        const productsUsed =
+          await this.serviceProductRepository.count<ServicesProductsEntity>({
+            attributes: [
+              'quantity',
+              [
+                sequelize.fn('sum', sequelize.col('quantity')),
+                'total_products',
+              ],
+            ],
+            group: ['quantity'],
+          });
+
+        const totalProductsUsed = productsUsed.reduce(
+          (previousValue, currentValue) =>
+            +previousValue + +currentValue.total_products,
+          0,
+        );
+
+        await this.productRepository.update(
+          { quantity_in_service: totalProductsUsed },
+          {
+            where: {
+              id: product.productId,
+            },
+          },
+        );
+      } catch (error) {}
+    });
   }
 
   async findAll(): Promise<ServiceEntity[]> {
@@ -129,6 +165,7 @@ export class ServicesService {
       }));
 
       await this.serviceProductRepository.bulkCreate(listProducts);
+      await this.updateProducts(data.products);
 
       return serviceUpdated;
     } catch (error) {

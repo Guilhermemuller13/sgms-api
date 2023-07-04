@@ -29,6 +29,9 @@ export class ProductsEntity extends AbstractEntity {
   quantity_minimum: number;
 
   @Column
+  quantity_in_service: number;
+
+  @Column
   status: boolean;
 
   @Column
