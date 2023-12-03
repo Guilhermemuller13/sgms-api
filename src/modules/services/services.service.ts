@@ -77,6 +77,9 @@ export class ServicesService {
               ],
             ],
             group: ['quantity'],
+            where: {
+              product_id: product.productId,
+            },
           });
 
         const totalProductsUsed = productsUsed.reduce(

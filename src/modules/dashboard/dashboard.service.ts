@@ -109,7 +109,7 @@ export class DashboardService {
       const mostUsedProductsIds = await this.serviceProductRepository.findAll({
         where: {
           quantity: {
-            [Op.gt]: 2,
+            [Op.gte]: 1,
           },
         },
         limit: 10,
@@ -135,7 +135,7 @@ export class DashboardService {
         description: product.description,
         brand: product.brand,
         price: product.price,
-        quantity: product.quantity - product.quantity_in_service,
+        quantity: product.quantity_in_service,
         quantity_minimum: product.quantity_minimum,
         status: product.status,
         available: product.available,
@@ -174,7 +174,7 @@ export class DashboardService {
 
       const lowStockProducts = products.filter((product) => {
         const quantity =
-          product.quantity - product.quantity_in_service <
+          product.quantity - product.quantity_in_service <=
           product.quantity_minimum;
 
         return quantity;
